@@ -70,6 +70,7 @@ main() {
         detect_existing_webcamd
         if shallow_cs_dependencies_check; then
             CN_INSTALL_CS="1"
+            msg "Passes shallow_cs_dependencies_check"
         else
             CN_INSTALL_CS="0"
         fi

@@ -113,22 +113,18 @@ shallow_cs_dependencies_check() {
     msg "Checking for camera-streamer dependencies ...\n"
 
     msg "Checking if device is a Raspberry Pi or BTT Pi ...\n"
-    if [[ "$(is_raspberry_pi)" = "0" ]]; then
-        status_msg "Checking if device is a Raspberry Pi ..." "3"
-        msg "This device is not a Raspberry Pi therefore camera-streamer cannot be installed ..."
-        return 1
-    else
-        if [[ "$(is_btt_board)" = "1" ]]; then
-            status_msg "Checking if device is a BTT Pi Board..."
-            msg "This device is not a BigTreeTech therefore camera-streamer cannot be installed"
-        fi
-    fi
 
+    # shellcheck disable=SC1054
+    if [[ "$(is_raspberry_pi)" = "0" ]] && [[ "$(is_btt_board)" = "0" ]]; then
+        status_msg "Checking if device is a Raspberry Pi or BTT Pi..." "3"
+        msg "This device is not a Raspberry Pi or BTT Pi therefore camera-streamer cannot be installed ..."
+        return 1
+    fi
 
     msg "Checking if device is not a Raspberry Pi 5 ...\n"
     if [[ "$(is_pi5)" = "1" ]]; then
         status_msg "Checking if device is not a Raspberry Pi 5 ..." "3"
-        msg "This device is a Raspberry Pi 5 therefore camera-streeamer cannot be installed ..."
+        msg "This device is a Raspberry Pi 5 therefore camera-streamer cannot be installed ..."
         return 1
     fi
     status_msg "Checking if device is not a Raspberry Pi 5 ..." "0"
@@ -136,7 +132,7 @@ shallow_cs_dependencies_check() {
     msg "Checking if device is not running Ubuntu ...\n"
     if [[ "$(is_ubuntu_arm)" = "1" ]]; then
         status_msg "Checking if device is not running Ubuntu ..." "3"
-        msg "This device is running Ubuntu therefore camera-streeamer cannot be installed ..."
+        msg "This device is running Ubuntu therefore camera-streamer cannot be installed ..."
         return 1
     fi
     status_msg "Checking if device is not running Ubuntu ..." "0"
