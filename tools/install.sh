@@ -70,12 +70,15 @@ main() {
         detect_existing_webcamd
         if shallow_cs_dependencies_check; then
             CN_INSTALL_CS="1"
+            msg "Passes shallow_cs_dependencies_check"
         else
             CN_INSTALL_CS="0"
         fi
         status_msg "Doing some tests ..." "0"
     else
         if [[ "$(is_raspbian)" = "1" ]]; then
+            CN_INSTALL_CS="1"
+        elif [[ "$(is_btt_board)" = "1" ]]; then
             CN_INSTALL_CS="1"
         else
             CN_INSTALL_CS="0"

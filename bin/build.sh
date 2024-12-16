@@ -90,6 +90,14 @@ is_pi5() {
     fi
 }
 
+is_btt_board() {
+    if [[ -f /proc/device-tree/model ]] &&
+    grep -q "BigTreeTech" /proc/device-tree/model; then
+        echo "1"
+    else
+        echo "0"
+    fi
+}
 is_ubuntu_arm() {
     if [[ "$(is_raspberry_pi)" = "1" ]] &&
     grep -q "ubuntu" /etc/os-release; then
@@ -135,6 +143,7 @@ clone_cstreamer() {
     ## Special handling because only supported on Raspberry Pi
     [[ -n "${CROWSNEST_UNATTENDED}" ]] || CROWSNEST_UNATTENDED="0"
     if { [[ "$(is_raspberry_pi)" = "0" ]] ||
+    [[ "$(is_btt_board)" = "0" ]] ||
     [[ "$(is_pi5)" = "1" ]] ||
     [[ "$(is_ubuntu_arm)" = "1" ]]; } &&
     [[ "${CROWSNEST_UNATTENDED}" = "0" ]]; then
@@ -150,10 +159,20 @@ clone_cstreamer() {
         printf "Using main branch of camera-streamer for Bookworm ...\n\n"
         CROWSNEST_CAMERA_STREAMER_REPO_BRANCH="main"
     fi
-    git clone "${CROWSNEST_CAMERA_STREAMER_REPO_SHIP}" \
+    if [[ "$(is_raspberry_pi)" = "1" ]]; then
+        git clone "${CROWSNEST_CAMERA_STREAMER_REPO_SHIP}" \
         -b "${CROWSNEST_CAMERA_STREAMER_REPO_BRANCH}" \
         "${BASE_CN_BIN_PATH}"/"${CSTREAMER_PATH}" \
         "${CLONE_FLAGS[@]}" --recurse-submodules --shallow-submodules
+    else
+        if [[ "$(is_btt_board)" = "1" ]];then
+        git clone "${CROWSNEST_CAMERA_STREAMER_REPO_SHIP}" \
+        -b "${CROWSNEST_CAMERA_STREAMER_REPO_BRANCH}" \
+        "${BASE_CN_BIN_PATH}"/"${CSTREAMER_PATH}" \
+        "${CLONE_FLAGS[@]}" --recurse-submodules --shallow-submodules
+        fi
+
+    fi
 }
 
 ### Clone Apps
@@ -170,7 +189,7 @@ clean_apps() {
     for app in "${ALL_PATHS[@]}"; do
         if [[ ! -d "${app}" ]]; then
             printf "'%s' does not exist! Clean ... [SKIPPED]\n" "${app}"
-        else 
+        else
             printf "\nRunning 'make clean' in %s ... \n" "${app}"
             pushd "${app}" &> /dev/null || exit 1
             make clean

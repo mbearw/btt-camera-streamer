@@ -7,7 +7,7 @@
 ####
 #### This File is distributed under GPLv3
 ####
-# shellcheck disable=all
+#spellcheck disable=all
 
 # crowsnest repo
 [[ -n "$CROWSNEST_REPO_SHIP" ]] || CROWSNEST_REPO_SHIP="https://github.com/mainsail-crew/crowsnest.git"

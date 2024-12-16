@@ -31,7 +31,7 @@ clone_ustreamer() {
 }
 
 clone_cstreamer() {
-    ## remove bin/ustreamer if exist
+    ## remove bin/camera-streamer if exist
     if [[ -d bin/camera-streamer ]]; then
         rm -rf bin/camera-streamer
     fi
