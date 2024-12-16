@@ -73,6 +73,7 @@ is_btt_board() {
     else
         echo "0"
     fi
+    }
 is_pi5() {
     if [[ -f /proc/device-tree/model ]] &&
     grep -q "Raspberry Pi 5" /proc/device-tree/model; then
@@ -116,11 +117,13 @@ shallow_cs_dependencies_check() {
         status_msg "Checking if device is a Raspberry Pi ..." "3"
         msg "This device is not a Raspberry Pi therefore camera-streamer cannot be installed ..."
         return 1
-    else 
-        if [["$(is_btt_board)"= "1"]]; then
+    else
+        if [[ "$(is_btt_board)" = "1" ]]; then
             status_msg "Checking if device is a BTT Pi Board..."
             msg "This device is not a BigTreeTech therefore camera-streamer cannot be installed"
+        fi
     fi
+
 
     msg "Checking if device is not a Raspberry Pi 5 ...\n"
     if [[ "$(is_pi5)" = "1" ]]; then
@@ -167,7 +170,7 @@ link_pkglist_rpi() {
 
 link_pkglist_generic() {
     sudo -u "${BASE_USER}" ln -sf "${SRC_DIR}/libs/pkglist-generic.sh" "${SRC_DIR}/pkglist.sh" &> /dev/null || return 1
-
+}
 run_apt_update() {
     apt-get -q --allow-releaseinfo-change update
 }
@@ -324,7 +327,7 @@ detect_existing_webcamd() {
                     msg "Stopping webcamd.service ..."
                     sudo systemctl stop webcamd.service &> /dev/null
                     status_msg "Stopping webcamd.service ..." "0"
-                    
+
                     msg "\nDisabling webcamd.service ...\r"
                     sudo systemctl disable webcamd.service &> /dev/null
                     status_msg "Disabling webcamd.service ..." "0"
