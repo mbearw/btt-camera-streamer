@@ -148,12 +148,12 @@ shallow_cs_dependencies_check() {
 
     msg "Checking for required packages ...\n"
     # Update the number below if you update SHALLOW_CHECK_PKGLIST
-    SHALLOW_CHECK_PKGLIST="^(libavformat-dev|libavutil-dev|libavcodec-dev|liblivemedia-dev|libcamera-dev|libcamera-apps-lite)$"
-    if [[ $(apt-cache search --names-only "${SHALLOW_CHECK_PKGLIST}" | wc -l) -lt 6 ]]; then
-        status_msg "Checking for required packages ..." "3"
-        msg "Not all required packages for camera-streamer can be installed ..."
-        return 1
-    fi
+#    SHALLOW_CHECK_PKGLIST="^(libavformat-dev|libavutil-dev|libavcodec-dev|liblivemedia-dev|libcamera-dev|libcamera-apps-lite)$"
+#    if [[ $(apt-cache search --names-only "${SHALLOW_CHECK_PKGLIST}" | wc -l) -lt 6 ]]; then
+#        status_msg "Checking for required packages ..." "3"
+#        msg "Not all required packages for camera-streamer can be installed ..."
+#        return 1
+#    fi
     status_msg "Checking for required packages ..." "0"
 
     status_msg "Checking for camera-streamer dependencies ..." "0"
