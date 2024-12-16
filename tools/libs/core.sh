@@ -137,14 +137,14 @@ shallow_cs_dependencies_check() {
     fi
     status_msg "Checking if device is not running Ubuntu ..." "0"
 
-    msg "Checking for required kernel module ...\n"
-    SHALLOW_CHECK_MODULESLIST="bcm2835_codec"
-    if [[ "$(test_load_module ${SHALLOW_CHECK_MODULESLIST})" = "0" ]]; then
-        status_msg "Checking for required kernel module ..." "3"
-        msg "Not all required kernel modules for camera-streamer can be loaded ..."
-        return 1
-    fi
-    status_msg "Checking for required kernel module ..." "0"
+#    msg "Checking for required kernel module ...\n"
+#    SHALLOW_CHECK_MODULESLIST="bcm2835_codec"
+#    if [[ "$(test_load_module ${SHALLOW_CHECK_MODULESLIST})" = "0" ]]; then
+#        status_msg "Checking for required kernel module ..." "3"
+#        msg "Not all required kernel modules for camera-streamer can be loaded ..."
+#        return 1
+#    fi
+#    status_msg "Checking for required kernel module ..." "0"
 
     msg "Checking for required packages ...\n"
     # Update the number below if you update SHALLOW_CHECK_PKGLIST
