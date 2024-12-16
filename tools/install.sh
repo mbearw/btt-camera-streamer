@@ -77,6 +77,8 @@ main() {
     else
         if [[ "$(is_raspbian)" = "1" ]]; then
             CN_INSTALL_CS="1"
+        elif [[ "$(is_btt_board)" = "1" ]]; then
+            CN_INSTALL_CS="1"
         else
             CN_INSTALL_CS="0"
         fi

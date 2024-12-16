@@ -66,7 +66,13 @@ is_raspberry_pi() {
         echo "0"
     fi
 }
-
+is_btt_board() {
+    if [[ -f /proc/device-tree/model ]] &&
+    grep -q "BigTreeTech" /proc/device-tree/model; then
+        echo "1"
+    else
+        echo "0"
+    fi
 is_pi5() {
     if [[ -f /proc/device-tree/model ]] &&
     grep -q "Raspberry Pi 5" /proc/device-tree/model; then
@@ -105,13 +111,16 @@ test_load_module() {
 shallow_cs_dependencies_check() {
     msg "Checking for camera-streamer dependencies ...\n"
 
-    msg "Checking if device is a Raspberry Pi ...\n"
+    msg "Checking if device is a Raspberry Pi or BTT Pi ...\n"
     if [[ "$(is_raspberry_pi)" = "0" ]]; then
         status_msg "Checking if device is a Raspberry Pi ..." "3"
-        msg "This device is not a Raspberry Pi therefore camera-streeamer cannot be installed ..."
+        msg "This device is not a Raspberry Pi therefore camera-streamer cannot be installed ..."
         return 1
+    else 
+        if [["$(is_btt_board)"= "1"]]; then
+            status_msg "Checking if device is a BTT Pi Board..."
+            msg "This device is not a BigTreeTech therefore camera-streamer cannot be installed"
     fi
-    status_msg "Checking if device is a Raspberry Pi ..." "0"
 
     msg "Checking if device is not a Raspberry Pi 5 ...\n"
     if [[ "$(is_pi5)" = "1" ]]; then
@@ -158,7 +167,6 @@ link_pkglist_rpi() {
 
 link_pkglist_generic() {
     sudo -u "${BASE_USER}" ln -sf "${SRC_DIR}/libs/pkglist-generic.sh" "${SRC_DIR}/pkglist.sh" &> /dev/null || return 1
-}
 
 run_apt_update() {
     apt-get -q --allow-releaseinfo-change update
